@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leetspeak Password Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Leetspeak Password Generator</h1>
+    <input type="text" id="inputWord" placeholder="Enter your word here">
+    <input type="text" id="passwordOutput" readonly>
+    <button onclick="convertToLeetPassword()">Convert to Leetspeak</button>
+    <button onclick="copyPassword()">Copy to Clipboard</button>
+    <div id="copyConfirm" class="copy-confirmation">Password copied!</div>
+    <div id="errorMessage" class="error-message">Password must be at least 8 characters. Try a longer word.</div>
+  </div>
+
+  <script>
+    const specials = ["!", "@", "$", "#"];
+
+    function toLeetSpeak(word) {
+      return word
+        .replace(/a/gi, "@")
+        .replace(/e/gi, "3")
+        .replace(/i/gi, "1")
+        .replace(/o/gi, "0")
+        .replace(/s/gi, "$")
+        .replace(/t/gi, "7");
+    }
+
+    function convertToLeetPassword() {
+      const input = document.getElementById("inputWord").value.trim();
+      const errorMsg = document.getElementById("errorMessage");
+      const output = document.getElementById("passwordOutput");
+      const confirm = document.getElementById("copyConfirm");
+      confirm.style.display = "none";
+      errorMsg.style.display = "none";
+
+      if (!input) return;
+
+      const leetWord = toLeetSpeak(input);
+      const special = specials[Math.floor(Math.random() * specials.length)];
+      const number = Math.floor(Math.random() * 90 + 10); // 10–99
+
+      const finalWord = leetWord.charAt(0).toUpperCase() + leetWord.slice(1);
+      const password = finalWord + special + number;
+
+      if (password.length < 8) {
+        output.value = '';
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      output.value = password;
+    }
+
+    function copyPassword() {
+      const passwordField = document.getElementById("passwordOutput");
+      passwordField.select();
+      passwordField.setSelectionRange(0, 99999); // For mobile
+      document.execCommand("copy");
+
+      const confirm = document.getElementById("copyConfirm");
+      confirm.style.display = "block";
+      setTimeout(() => { confirm.style.display = "none"; }, 2000);
+    }
+  </script>
+</body>
+</html>
