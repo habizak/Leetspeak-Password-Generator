@@ -1,71 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leetspeak Password Generator</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert words to leet speak passwords">
+    <meta name="theme-color" content="#fcffea">
+    <title>1337Pa$$ - Leet Speak Password</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Leetspeak Password Generator</h1>
-    <input type="text" id="inputWord" placeholder="Enter your word here">
-    <input type="text" id="passwordOutput" readonly>
-    <button onclick="convertToLeetPassword()">Convert to Leetspeak</button>
-    <button onclick="copyPassword()">Copy to Clipboard</button>
-    <div id="copyConfirm" class="copy-confirmation">Password copied!</div>
-    <div id="errorMessage" class="error-message">Password must be at least 8 characters. Try a longer word.</div>
-  </div>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">
+            <span class="logo-green">1</span>337<span class="logo-green">P</span>@$$
+        </h1>
+        <p class="subtitle">Leet speak password</p>
+    </header>
 
-  <script>
-    const specials = ["!", "@", "$", "#"];
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Input State -->
+        <div id="input-state" class="state-container">
+            <div class="input-container">
+                <input 
+                    type="text" 
+                    id="word-input" 
+                    class="word-input" 
+                    placeholder="Enter word"
+                    autocomplete="off"
+                    maxlength="24"
+                >
+            </div>
+            
+            <!-- Validation Messages -->
+            <div id="validation-messages" class="validation-container">
+                <div id="length-validation" class="validation-item hidden">
+                    <div class="validation-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 5L15 15M15 5L5 15" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span>Word must be at least 8 characters</span>
+                </div>
+                <div id="alpha-validation" class="validation-item hidden">
+                    <div class="validation-icon">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 5L15 15M15 5L5 15" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span>Only alphabets are accepted</span>
+                </div>
+            </div>
+        </div>
 
-    function toLeetSpeak(word) {
-      return word
-        .replace(/a/gi, "@")
-        .replace(/e/gi, "3")
-        .replace(/i/gi, "1")
-        .replace(/o/gi, "0")
-        .replace(/s/gi, "$")
-        .replace(/t/gi, "7");
-    }
+        <!-- Output State -->
+        <div id="output-state" class="state-container hidden">
+            <div class="output-container">
+                <p id="output-text" class="output-text"></p>
+            </div>
+        </div>
+    </main>
 
-    function convertToLeetPassword() {
-      const input = document.getElementById("inputWord").value.trim();
-      const errorMsg = document.getElementById("errorMessage");
-      const output = document.getElementById("passwordOutput");
-      const confirm = document.getElementById("copyConfirm");
-      confirm.style.display = "none";
-      errorMsg.style.display = "none";
+    <!-- Footer -->
+    <footer class="footer">
+        <!-- Input State Footer -->
+        <div id="input-footer" class="footer-content">
+            <button id="random-btn" class="btn btn-random" aria-label="Generate random word">
+                <span class="material-symbols-outlined">shuffle</span>
+                <span>Random</span>
+            </button>
+            <button id="convert-btn" class="btn btn-convert" aria-label="Convert to leet speak">
+                <span class="material-symbols-outlined">swap_horiz</span>
+                <span>Convert</span>
+            </button>
+        </div>
 
-      if (!input) return;
+        <!-- Output State Footer -->
+        <div id="output-footer" class="footer-content hidden">
+            <button id="back-btn" class="btn btn-icon" aria-label="Go back">
+                <span class="material-symbols-outlined">undo</span>
+            </button>
+            <div class="footer-actions">
+                <button id="toggle-visibility-btn" class="btn btn-icon btn-border" aria-label="Toggle password visibility">
+                    <span id="hide-icon" class="material-symbols-outlined">visibility</span>
+                    <span id="show-icon" class="material-symbols-outlined hidden">visibility_off</span>
+                </button>
+                <button id="copy-btn" class="btn btn-icon btn-primary" aria-label="Copy password">
+                    <span id="copy-icon" class="material-symbols-outlined">content_copy</span>
+                    <span id="check-icon" class="material-symbols-outlined hidden">check</span>
+                </button>
+            </div>
+        </div>
+    </footer>
 
-      const leetWord = toLeetSpeak(input);
-      const special = specials[Math.floor(Math.random() * specials.length)];
-      const number = Math.floor(Math.random() * 90 + 10); // 10–99
-
-      const finalWord = leetWord.charAt(0).toUpperCase() + leetWord.slice(1);
-      const password = finalWord + special + number;
-
-      if (password.length < 8) {
-        output.value = '';
-        errorMsg.style.display = "block";
-        return;
-      }
-
-      output.value = password;
-    }
-
-    function copyPassword() {
-      const passwordField = document.getElementById("passwordOutput");
-      passwordField.select();
-      passwordField.setSelectionRange(0, 99999); // For mobile
-      document.execCommand("copy");
-
-      const confirm = document.getElementById("copyConfirm");
-      confirm.style.display = "block";
-      setTimeout(() => { confirm.style.display = "none"; }, 2000);
-    }
-  </script>
+    <script src="js/converter.js"></script>
+    <script src="js/validator.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/clipboard.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Note: Service worker only works on http/https, not file://
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .catch(err => console.log('Service worker registration failed:', err));
+            });
+        } else if (window.location.protocol === 'file:') {
+            console.log('ℹ️ Running from file:// protocol. Service worker disabled, but core functionality works.');
+        }
+    </script>
 </body>
 </html>
+

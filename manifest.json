@@ -1,0 +1,25 @@
+{
+  "name": "1337Pa$$ - Leet Speak Password",
+  "short_name": "1337Pa$$",
+  "description": "Convert words to leet speak passwords",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcffea",
+  "theme_color": "#fcffea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
